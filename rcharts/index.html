@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>RCharts</title>
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/raphael-min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				bar("bar",500,300);
+				line("line",500,300);
+				bar("cc",500,300);
+				line("dd",500,300);
+			});
+			
+			function bar(holder,width,height) {
+				var paper=Raphael(holder,width,height);
+				var x = 10;
+				var y = 10;
+				var w = width-20;
+				var h = height-20;
+				var cor = 5;
+				var rect = paper.rect(x,
+									y,
+									w,
+									h,
+									cor);
+				rect.attr("fill","#F0FFFF").attr("opacity","0.7").attr("stroke-opacity","0.5");
+				var x_line = paper.path("M"+(x+10)+" "+(y+h-10)+"L"+(x+w-10)+" "+(y+h-10)).attr("stroke","#38A4D9");
+				var y_line = paper.path("M"+(x+10)+" "+(y+h-10)+"L"+(x+10)+" "+(y+10)).attr("stroke","#38A4D9");
+				for(var c=50;c<=w-20;c+=50) {
+					paper.path("M"+(20+c)+" "+(10+h-10)+"L"+(20+c)+" 20")
+					.attr("stroke-width","1")
+					.attr("stroke","#38A4D9")
+					.attr("stroke-opacity","0.2");
+				}
+				for(var c=50;c<=h-20;c+=50) {
+					paper.path("M20 "+(10+h-c)+"L"+(10+w-10)+" "+(10+h-c))
+					.attr("stroke-width","1")
+					.attr("stroke","#38A4D9")
+					.attr("stroke-opacity","0.2");
+				}
+				var count = 10;
+				var bar_width=20;
+				var tipArr = new Array();
+				for(var i=1;i<=10;i++) {
+					var bar_height=Math.random()*(h-20);
+					/*
+					paper.path("M"+(20+(i*2-1)*bar_width)+" 380L"+(20+(i*2-1)*bar_width)+" "+(380-bar_height))
+					.attr("stroke","#F15E37")
+					.attr("stroke-width","1")
+					.attr("fill","#A5D9DA");
+					paper.path("M"+(20+(i*2-1)*bar_width)+" "+(380-bar_height)+"L"+(20+i*2*bar_width)+" "+(380-bar_height))
+					.attr("stroke","#F15E37")
+					.attr("stroke-width","1")
+					.attr("fill","#A5D9DA");
+					paper.path("M"+(20+i*2*bar_width)+" "+(380-bar_height)+"L"+(20+i*2*bar_width)+" 380")
+					.attr("stroke","#F15E37")
+					.attr("stroke-width","1")
+					.attr("fill","#A5D9DA");*/
+					tipArr[i-1] = paper.text(20+(i*2-1)*bar_width+bar_width/2,h-bar_height-10,Math.round(bar_height));
+					tipArr[i-1].hide();
+					paper.rect(20+(i*2-1)*bar_width,h,bar_width,0)
+					.attr("stroke-width","0")
+					.attr("fill","#A5D9DA")
+					.mouseover(function(){
+						this.attr("stroke-width","1");
+						tipArr[(this.attr("x")-20-bar_width)/(2*bar_width)].show();
+					}).mouseout(function(){
+						this.attr("stroke-width","0");
+						tipArr[(this.attr("x")-20-bar_width)/(2*bar_width)].hide();
+					}).stop().animate({"y":(h-bar_height),"height":bar_height},1000);
+				}
+				var text = paper.text(rect.attr("x")+rect.attr("width")/2,50,"RCharts is so funny!");
+				var textlogo = paper.text(rect.attr("x")+rect.attr("width")-30,rect.attr("y")+rect.attr("height")-20,"RCharts");
+			}
+			
+			function line(holder,width,height) {
+				var paper=Raphael(holder,width,height);
+				var x = 10;
+				var y = 10;
+				var w = width-20;
+				var h = height-20;
+				var cor = 5;
+				var rect = paper.rect(x,
+									y,
+									w,
+									h,
+									cor);
+				rect.attr("fill","#F0FFFF").attr("opacity","0.7").attr("stroke-opacity","0.5");
+				var x_line = paper.path("M"+(x+10)+" "+(y+h-10)+"L"+(x+w-10)+" "+(y+h-10)).attr("stroke","#38A4D9");
+				var y_line = paper.path("M"+(x+10)+" "+(y+h-10)+"L"+(x+10)+" "+(y+10)).attr("stroke","#38A4D9");
+				for(var c=50;c<=w-20;c+=50) {
+					paper.path("M"+(20+c)+" "+(10+h-10)+"L"+(20+c)+" 20")
+					.attr("stroke-width","1")
+					.attr("stroke","#38A4D9")
+					.attr("stroke-opacity","0.2");
+				}
+				for(var c=50;c<=h-20;c+=50) {
+					paper.path("M20 "+(10+h-c)+"L"+(10+w-10)+" "+(10+h-c))
+					.attr("stroke-width","1")
+					.attr("stroke","#38A4D9")
+					.attr("stroke-opacity","0.2");
+				}
+				var count = 10;
+				var split_width = (w-20)/(count-1);
+				var r = 3;
+				var circleArr = new Array();
+				var tipArr = new Array();
+				for(var i=1;i<=10;i++) {
+					var split_height = Math.random()*(h-20);
+					tipArr[i-1] = paper.text(20+(i-1)*split_width,h-split_height-10,Math.round(split_height));
+					tipArr[i-1].hide();
+					circleArr[i-1] = paper.circle(20+(i-1)*split_width,h-split_height,r)
+					.attr("stroke","#38A4D9")
+					.data("split_height",split_height)
+					.mouseover(function(){
+						this.attr("fill","#38A4D9").attr("r",r+2);
+						tipArr[Math.round((this.attr("cx")-20)/split_width)].show();
+					}).mouseout(function(){
+						this.attr("fill","none").attr("r",r);
+						tipArr[Math.round((this.attr("cx")-20)/split_width)].hide();
+					}).click(function(){
+						alert(Math.round(this.data("split_height")));
+					});
+				}
+				for(var c=0;c<=8;c++) {
+					var p = paper.path("M"+circleArr[c].attr("cx")+" "+circleArr[c].attr("cy")+"L"+circleArr[c].attr("cx")+" "+circleArr[c].attr("cy"))
+					.attr("stroke","#38A4D9")
+					.attr("stroke-width","3");
+					var ani = Raphael.animation({path:"M"+circleArr[c].attr("cx")+" "+circleArr[c].attr("cy")+"L"+
+					circleArr[c+1].attr("cx")+" "+circleArr[c+1].attr("cy")},200);
+					p.stop().animate(ani.delay(c*200));
+				}
+				var text = paper.text(rect.attr("x")+rect.attr("width")/2,50,"RCharts is so funny!");
+				var textlogo = paper.text(rect.attr("x")+rect.attr("width")-30,rect.attr("y")+rect.attr("height")-20,"RCharts");
+			}
+		</script>
+	</head>
+
+	<body id="bbb">
+		<div id="bar" style="float:left"></div>
+		<div id="line" style="float:left"></div>
+		<div id="cc" style="clear:both; float:left"></div>
+		<div id="dd" style="float:left"></div>
+	</body>
+</html>
